@@ -25,9 +25,11 @@ export const ADD_USER = gql`
 `;
 
 export const ADD_THOUGHT = gql`
-  mutation addThought($thoughtText: String!) {
-    addThought(thoughtText: $thoughtText) {
+  mutation addThought($thoughtText: String!, $hoursWorked: String!, $patientsWorked: Int!) {
+    addThought(thoughtText: $thoughtText, hoursWorked: $hoursWorked, patientsWorked: $patientsWorked) {
       _id
+      hoursWorked
+      patientsWorked
       thoughtText
       thoughtAuthor
       createdAt
@@ -43,6 +45,8 @@ export const ADD_COMMENT = gql`
   mutation addComment($thoughtId: ID!, $commentText: String!) {
     addComment(thoughtId: $thoughtId, commentText: $commentText) {
       _id
+      hoursWorked
+      patientsWorked
       thoughtText
       thoughtAuthor
       createdAt

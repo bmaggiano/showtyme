@@ -2,6 +2,18 @@ const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
 const thoughtSchema = new Schema({
+  hoursWorked: {
+    type: String,
+    required: 'You must enter hours worked!',
+    minlength: 1,
+    maxlength: 80,
+    trim: true,
+  },
+  patientsWorked: {
+    type: Number,
+    required: 'How many patients did you work?',
+    trim: true,
+  },
   thoughtText: {
     type: String,
     required: 'You need to leave a thought!',

@@ -48,10 +48,12 @@ const resolvers = {
 
       return { token, user };
     },
-    addThought: async (parent, { thoughtText }, context) => {
+    addThought: async (parent, { thoughtText, hoursWorked, patientsWorked }, context) => {
       if (context.user) {
         const thought = await Thought.create({
           thoughtText,
+          hoursWorked,
+          patientsWorked,
           thoughtAuthor: context.user.username,
         });
 

@@ -9,7 +9,6 @@ import { QUERY_THOUGHTS } from '../utils/queries';
 const Home = () => {
   const { loading, data } = useQuery(QUERY_THOUGHTS);
   const thoughts = data?.thoughts || [];
-  const comments = data?.thoughts.comments || [];
 
   return (
     <main>
@@ -26,7 +25,6 @@ const Home = () => {
           ) : (
             <ThoughtList
               thoughts={thoughts}
-              comments={comments}
               title="Some Feed for Thought(s)..."
             />
           )}

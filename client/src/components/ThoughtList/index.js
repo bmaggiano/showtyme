@@ -1,10 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import CommentList from '../CommentList';
 
 const ThoughtList = ({
   thoughts,
-  comments,
   title,
   showTitle = true,
   showUsername = true,
@@ -41,7 +39,9 @@ const ThoughtList = ({
               )}
             </h4>
             <div className="card-body bg-light p-2">
-              <p>{thought.thoughtText}</p>
+              <p>Patients Left: {thought.thoughtText}</p>
+              <p>Hours Worked: {thought.hoursWorked}</p>
+              <p>Patients Worked: {thought.patientsWorked}</p>
             </div>
             <Link
               className="btn btn-primary btn-block btn-squared"

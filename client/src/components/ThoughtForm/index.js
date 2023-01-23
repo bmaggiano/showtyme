@@ -8,36 +8,13 @@ import { QUERY_THOUGHTS, QUERY_ME } from '../../utils/queries';
 import Auth from '../../utils/auth';
 
 const ThoughtForm = () => {
-  const [thoughtText, setThoughtText] = useState({
+  const [workerForm, setWorkerForm] = useState({
     thought: '',
     hours: '',
     patients: '',
   });
 
-
-  const [characterCount, setCharacterCount] = useState(0);
-
-  const [addThought, { error }] = useMutation(ADD_THOUGHT, {
-    update(cache, { data: { addThought } }) {
-      try {
-        const { thoughts } = cache.readQuery({ query: QUERY_THOUGHTS });
-
-        cache.writeQuery({
-          query: QUERY_THOUGHTS,
-          data: { thoughts: [addThought, ...thoughts] },
-        });
-      } catch (e) {
-        console.error(e);
-      }
-
-      // update me object's cache
-      const { me } = cache.readQuery({ query: QUERY_ME });
-      cache.writeQuery({
-        query: QUERY_ME,
-        data: { me: { ...me, thoughts: [...me.thoughts, addThought] } },
-      });
-    },
-  });
+  const [addThought, { error }] = useMutation(ADD_THOUGHT);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -45,12 +22,15 @@ const ThoughtForm = () => {
     try {
       const { data } = await addThought({
         variables: {
-          thoughtText,
+          hoursWorked: workerForm.hours,
+          patientsWorked: parseInt(workerForm.patients),
+          thoughtText: workerForm.thought,
           thoughtAuthor: Auth.getProfile().data.username,
         },
       });
 
-      setThoughtText('');
+      setWorkerForm({ thought: '', hours: '', patients: '' })
+      window.location.reload()
     } catch (err) {
       console.error(err);
     }
@@ -58,8 +38,8 @@ const ThoughtForm = () => {
 
   const handleChange = (e) => {
     // const { name, value } = event.target;
-    setThoughtText({
-      ...thoughtText,
+    setWorkerForm({
+      ...workerForm,
       [e.target.name]: e.target.value,
   });
   };
@@ -77,29 +57,32 @@ const ThoughtForm = () => {
           >
             <div className="col-12 col-lg-9">
               <input
+              type="text"
               name="hours"
               placeholder='hours worked'
-              value={thoughtText.hours}
+              value={workerForm.hours}
               className="form-input w-100"
               onChange={handleChange}
               style={{ lineHeight: '1.5', resize: 'vertical' }}
               ></input>
               <input
+              type="number"
               name="patients"
               placeholder='patients worked'
-              value={thoughtText.patients}
+              value={workerForm.patients}
               className="form-input w-100"
               onChange={handleChange}
               style={{ lineHeight: '1.5', resize: 'vertical' }}
               ></input>
-              <textarea
+              <input
+                type="text"
                 name="thought"
                 placeholder="Lexiscan Remaining"
-                value={thoughtText.thought}
+                value={workerForm.thought}
                 className="form-input w-100"
                 style={{ lineHeight: '1.5', resize: 'vertical' }}
                 onChange={handleChange}
-              ></textarea>
+              ></input>
             </div>
 
             <div className="col-12 col-lg-3">
